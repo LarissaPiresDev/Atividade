@@ -1,8 +1,10 @@
-from config import create_app
-from controllers.atividade_controller import atividade_bp
+from config import app, db
+from atividadesmicrosservicos.atividade_controller import atividade_bp
 
-app = create_app()
-app.register_blueprint(atividade_bp, url_prefix='/atividades')
+app.register_blueprint(atividade_bp)
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5002)
+    app.run(host=app.config['HOST'], port = app.config['PORT'], debug = app.config['DEBUG'])
