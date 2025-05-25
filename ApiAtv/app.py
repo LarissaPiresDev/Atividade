@@ -1,5 +1,5 @@
 from config import app, db
-from atividadesmicrosservicos.atividade_controller import atividade_bp
+from ApiAtv.atividadesmicrosservicos.atividade_routes import atividade_bp
 
 app.register_blueprint(atividade_bp)
 
