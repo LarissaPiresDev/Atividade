@@ -1,10 +1,15 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from .atividade_model import AtividadeNaoEncontrada, IdNaoInteiro, IdMenorqueUm, listar_atividades, listar_atividades_por_id
 from config import db
+import requests
 
 schoolSystem = 'http://127.0.0.1:5003'
 
 atividades = Blueprint('atividades', __name__)
+
+def validar_professor(professor_id):
+    resp = requests.get(f"{schoolSystem}/turmas/{professor_id}")
+    return resp.status_code == 200
 
 @atividades.route('/atividades', methods=['GET'])
 def get_atividades():
@@ -25,7 +30,11 @@ def getPorId(id):
         return jsonify({'mensagem': 'Id de atividade NOT FOUND (Não Encontrado)'}), 404
 
 
-
+@atividades.routes('/atividades', methods=['POST'])
+def postAtividade():
+    atividade = request.json
+    
+    
 """
 
 
