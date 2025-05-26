@@ -21,10 +21,29 @@ class Atividades(db.Model):
                 "enunciado": self.enunciado, 
                 "alternativas": self.alternativas.split(' | ')}
     
+class IdNaoInteiro(Exception):
+    pass
+class IdMenorqueUm(Exception):
+    pass
+class AtividadeNaoEncontrada(Exception):
+    pass
+    
 def listar_atividades():
     atividades = Atividades.query.all()
     return [atividade.exibir_atividade() for atividade in atividades]
 
+def listar_atividades_por_id(id):
+    try:
+        id = int(id)
+    except ValueError:
+        raise IdNaoInteiro
+    if id <=0:
+        raise IdMenorqueUm
+    
+    atividade = Atividades.query.get(id)
+    if not atividade:
+        raise AtividadeNaoEncontrada
+    return atividade.exibir_atividade()
 
 
     
