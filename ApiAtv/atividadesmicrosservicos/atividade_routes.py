@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from .atividade_model import AtividadeNaoEncontrada, IdNaoInteiro, IdMenorqueUm, listar_atividades, listar_atividades_por_id
+from .atividade_model import AtividadeNaoEncontrada, IdNaoInteiro, IdMenorqueUm, listar_atividades, listar_atividades_por_id, criar_atividade
 from config import db
 import requests
 
@@ -66,7 +66,9 @@ def postAtividade():
     if atividade['resposta'] not in ['a', 'b', 'c', 'd', 'e']:
         return jsonify({'mensagem': 'O campo de "resposta" PRECISA SER APENAS DA LETRA A até E'}), 400
     
-    return jsonify({'mensagem': 'Os dados Foram inseridos corretamente, pode ir criar essa funçã ono model'})
+
+    criar_nova_reserva = criar_atividade(atividade)
+    return jsonify({'mensagem': 'Atividade Criada com Sucesso'})
         
 """
 

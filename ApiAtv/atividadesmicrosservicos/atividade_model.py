@@ -16,10 +16,10 @@ class Atividades(db.Model):
         self.resposta = resposta
         
     def exibir_atividade(self):
-        return {"id": self.id, 
-                "professor_id": self.professor_id, 
-                "enunciado": self.enunciado, 
-                "alternativas": self.alternativas.split(' | ')}
+        return {"1- id": self.id, 
+                "2- professor_id": self.professor_id, 
+                "3- enunciado": self.enunciado, 
+                "4- alternativas": self.alternativas.split(' | ')}
     
 class IdNaoInteiro(Exception):
     pass
@@ -44,6 +44,20 @@ def listar_atividades_por_id(id):
     if not atividade:
         raise AtividadeNaoEncontrada
     return atividade.exibir_atividade()
+
+def criar_atividade(atividade):
+
+    alternativas_formatadas = ' | '.join(atividade['alternativas'])
+    new_atividade = Atividades(
+        professor_id= int(atividade['professor_id']),
+        enunciado= str(atividade['enunciado']),
+        alternativas=str(alternativas_formatadas),
+        resposta=str(atividade['resposta'])
+    )
+
+    db.session.add(new_atividade)
+    db.session.commit()
+    return new_atividade.exibir_atividade()
 
 
     
