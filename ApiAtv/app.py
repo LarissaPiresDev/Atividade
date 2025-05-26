@@ -1,7 +1,7 @@
 from config import app, db
-from ApiAtv.atividadesmicrosservicos.atividade_routes import atividade_bp
+from atividadesmicrosservicos.atividade_routes import atividades
 
-app.register_blueprint(atividade_bp)
+app.register_blueprint(atividades)
 
 with app.app_context():
     db.create_all()

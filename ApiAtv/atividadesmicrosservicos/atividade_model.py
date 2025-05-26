@@ -20,5 +20,11 @@ class Atividades(db.Model):
                 "professor_id": self.professor_id, 
                 "enunciado": self.enunciado, 
                 "alternativas": self.alternativas.split(' | ')}
+    
+def listar_atividades():
+    atividades = Atividades.query.all()
+    return [atividade.exibir_atividade() for atividade in atividades]
+
+
 
     

@@ -1,15 +1,18 @@
 from flask import Blueprint, jsonify
-from models import atividade_model
-from clients.pessoa_service_client import PessoaServiceClient
+from .atividade_model import listar_atividades
+from config import db
 
-atividade_bp = Blueprint('atividade_bp', __name__)
+schoolSystem = 'http://127.0.0.1:5003'
 
-@atividade_bp.route('/', methods=['GET'])
-def listar_atividades():
-    atividades = atividade_model.listar_atividades()
-    return jsonify(atividades)
+atividades = Blueprint('atividades', __name__)
 
-@atividade_bp.route('/<int:id_atividade>', methods=['GET'])
+@atividades.route('/atividades', methods=['GET'])
+def get_atividades():
+    return jsonify(listar_atividades())
+
+
+
+""" @atividades.route('/atividade/<id>', methods=['GET'])
 def obter_atividade(id_atividade):
     try:
         atividade = atividade_model.obter_atividade(id_atividade)
@@ -17,7 +20,8 @@ def obter_atividade(id_atividade):
     except atividade_model.AtividadeNotFound:
         return jsonify({'erro': 'Atividade não encontrada'}), 404
 
-@atividade_bp.route('/<int:id_atividade>/professor/<int:id_professor>', methods=['GET'])
+
+@atividades('/<int:id_atividade>/professor/<int:id_professor>', methods=['GET'])
 def obter_atividade_para_professor(id_atividade, id_professor):
     try:
         atividade = atividade_model.obter_atividade(id_atividade)
@@ -26,4 +30,4 @@ def obter_atividade_para_professor(id_atividade, id_professor):
             atividade.pop('respostas', None)
         return jsonify(atividade)
     except atividade_model.AtividadeNotFound:
-        return jsonify({'erro': 'Atividade não encontrada'}), 404
+        return jsonify({'erro': 'Atividade não encontrada'}), 404 """
