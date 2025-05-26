@@ -30,11 +30,21 @@ def getPorId(id):
         return jsonify({'mensagem': 'Id de atividade NOT FOUND (Não Encontrado)'}), 404
 
 
-@atividades.routes('/atividades', methods=['POST'])
+@atividades.route('/atividades', methods=['POST'])
 def postAtividade():
     atividade = request.json
+    chaves_esperadas = {"professor_id", "enunciado", "alternativas"}
+    chaves_inseridas = set(atividade.keys())
+
+    chaves_invalidas = chaves_inseridas - chaves_esperadas
+    if chaves_invalidas:
+        return jsonify({'mensagem': 'Chaves inseridas inválidas, retire-as',
+                        'Chaves Esperadas': list(chaves_esperadas),
+                        'Chaves Inválidas Inseridas': list(chaves_invalidas)
+                        }), 400
     
-    
+    if set(chaves_esperadas) - set(chaves_inseridas):
+        return jsonify({'mensagem': f'Para criar atividade, preciso que insira o valor os seguintes campos: {list(chaves_esperadas)}'}), 400
 """
 
 
