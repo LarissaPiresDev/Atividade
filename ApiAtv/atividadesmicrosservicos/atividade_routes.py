@@ -33,7 +33,7 @@ def getPorId(id):
 @atividades.route('/atividades', methods=['POST'])
 def postAtividade():
     atividade = request.json
-    chaves_esperadas = {"professor_id", "enunciado", "alternativas"}
+    chaves_esperadas = {"professor_id", "enunciado", "alternativas", "resposta"}
     chaves_inseridas = set(atividade.keys())
 
     chaves_invalidas = chaves_inseridas - chaves_esperadas
@@ -45,6 +45,29 @@ def postAtividade():
     
     if set(chaves_esperadas) - set(chaves_inseridas):
         return jsonify({'mensagem': f'Para criar atividade, preciso que insira o valor os seguintes campos: {list(chaves_esperadas)}'}), 400
+
+    if not isinstance(atividade['professor_id'], int) or atividade['professor_id'] <= 0:
+        return jsonify({'mensagem': 'Campo "professor_id" PRECISA SER UM NÚMERO INTEIRO MAIOR DO QUE ZERO!!!'}), 400
+    
+    professor_id = atividade.get("professor_id")
+    if not validar_professor(professor_id):
+        return jsonify({'mensagem': 'Id de Professor Não Encontrado'}), 400
+
+    if not isinstance(atividade['enunciado'], str) or not atividade['enunciado'].strip():
+        return jsonify({'mensagem': 'O campo para a chave "enunciado" PRECISA SER UMA STRING E NÂO PODE ESTAR VAZIA!!!'}), 400
+    
+    if not isinstance(atividade['alternativas'], list) or len(atividade['alternativas']) < 2 or len(atividade['alternativas']) > 5 :
+        return jsonify({'mensagem': 'O campo de "alternativas" PRECISA SER UMA LISTA [] COM PELO MENOS 2 OPÇÕES DE RESPOSTA e NO MÁXIMO 5!!!!'}), 400
+    
+    if not isinstance(atividade['resposta'], str) or not atividade['resposta'].strip():
+        return jsonify({'mensagem': 'O campo de "resposta" PRECISA TER APENAS SER UMA STRING COM APENAS UMA LETRA COMO RESPOSTA (ex: a)'}), 400
+    
+    atividade['resposta'] = atividade['resposta'].strip().lower()
+    if atividade['resposta'] not in ['a', 'b', 'c', 'd', 'e']:
+        return jsonify({'mensagem': 'O campo de "resposta" PRECISA SER APENAS DA LETRA A até E'}), 400
+    
+    return jsonify({'mensagem': 'Os dados Foram inseridos corretamente, pode ir criar essa funçã ono model'})
+        
 """
 
 
