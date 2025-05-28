@@ -11,7 +11,7 @@ COPY . .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Expõe a porta da aplicação Flask
-EXPOSE 5001
+EXPOSE 5004
 
 # Comando para rodar a aplicação
 CMD ["python", "./ApiAtv/app.py"]
