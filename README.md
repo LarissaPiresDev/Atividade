@@ -14,9 +14,8 @@ A API de Reserva de Atividades é um **microsserviço** que faz parte de um sist
 
 ## 🚀 Tecnologias Utilizadas
 
-- Python 3.x
+- Python
 - Flask
-- SQLAlchemy
 - SQLite (como banco de dados local)
 - Requests (para consumo da API externa)
 
@@ -49,11 +48,11 @@ pip install -r requirements.txt
 ### 4. Execute a API
 
 ```bash
-python .\api\app.py
+python .\ApiAtv\app.py
 ```
 
 A aplicação estará disponível em:
-📍 `http://localhost:5001`
+📍 `http://127.0.0.1:5004`
 
 📝 **Observação:** O banco de dados é criado automaticamente na primeira execução.
 
@@ -64,3 +63,42 @@ A aplicação estará disponível em:
 - `GET /atividades` – Lista todas as atividades
 - `POST /atividades` – Cria uma nova atividade
 - `GET /atividades/<id>` – Detalha uma atividade
+
+### Exemplo de corpo JSON para criação:
+
+```json
+    {
+        "professor_id": 1,
+        "enunciado": "Quanto é 1 + 1?",
+        "alternativas": "["A-) 2", "B-) 3", "C-) 4"" D-) 5", "E-)6"]",
+        "resposta": "A"
+    }
+```
+## 🔗 Dependência Externa
+
+Certifique-se de que a **API de Gerenciamento Escolar** esteja rodando em:
+
+```
+http://127.0.0.1:5003
+```
+
+---
+
+## 📦 Estrutura do Projeto
+
+```
+reserva-salas/
+│
+├── 📁 ApiAtv/
+│   ├── 📁 instance/
+│   │   └── 🛢️ atividade.db
+│   ├── 📁 atividadesmicrosservicos/
+│   │   ├── 🐍 atividade_model.py
+│   │   └── 🐍 atividade_routes.py
+│   ├── 🐍 app.py
+│   └── 🐍 config.py
+│
+├── 🐳 Dockerfile
+├── 📄 requirements.txt
+└── 📄 README.md
+```
